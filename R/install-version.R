@@ -11,7 +11,7 @@
 #'
 #' Older versions of packages on CRAN are usually only available in source form.  If your requested
 #' package contains compiled code, you will need to have an R development environment installed. You
-#' can check if you do by running \code{\link[pkgbuild]{has_devel}}.
+#' can check whether you do by running \code{\link[devtools]{has_devel}}.
 #'
 #' @export
 #' @family package installation
