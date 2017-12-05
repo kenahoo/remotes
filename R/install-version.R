@@ -137,10 +137,15 @@ download_version_url <- function(package, version, repos, type) {
     available <- available.packages(contriburl)
 
     if (package %in% row.names(available) && satisfies(available[package, 'Version'], required)) {
-      deps <- parse_deps(available[package, 'Dependencies'])
-      install_version_deps(deps)
-# TODO - DON'T INSTALL, JUST RETURN URL:
-      return(install.packages(package, repos = repos, contriburl = contriburl, type = type, ...))
+      row <- available[package, ]
+      return(paste0(
+        row[["Repository"]],
+        "/",
+        row[["Package"]],
+        "_",
+        row[["Version"]],
+        ".tar.gz"
+      ))
     }
   }
 
@@ -161,20 +166,8 @@ download_version_url <- function(package, version, repos, type) {
         }
       }
     }
-    if (!is.null(package.path)) {
-      bundle <- remote_download(url_remote(file.path(r$repo, "/src/contrib/Archive/", package.path)))
-      on.exit(unlink(bundle), add = TRUE)
-
-      source <- source_pkg(bundle)
-      on.exit(unlink(source, recursive = TRUE), add = TRUE)
-
-      pkg <- as.package(source)
-      dep_list <- pkg[tolower(standardise_dep(TRUE))]
-      deps <- do.call("rbind", unname(compact(lapply(dep_list, parse_deps))))
-      install_version_deps(deps)
-
-      return(install_local(source, ...))
-    }
+    if (!is.null(package.path))
+      return(url_remote(file.path(r$repo, "/src/contrib/Archive/", package.path)))
   }
 
   stop(sprintf("Couldn't find appropriate version of '%s' package", package))
