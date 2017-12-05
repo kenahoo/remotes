@@ -13,6 +13,10 @@
 #' package contains compiled code, you will need to have an R development environment installed. You
 #' can check whether you do by running \code{\link[devtools]{has_devel}}.
 #'
+#' @details Please note that as of the current version of this package, the `repos` argument does
+#' not propagate when installing the dependencies of `package`.  For this reason it may be better
+#' to set `options('repos')` (which will propagate) rather than use the `repos` argument.
+#'
 #' @export
 #' @family package installation
 #' @param package Name of the package to install.
